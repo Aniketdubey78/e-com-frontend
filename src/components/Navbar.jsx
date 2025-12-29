@@ -1,35 +1,74 @@
 import { Navbar, NavbarBrand, NavbarCollapse, NavbarLink, NavbarToggle } from "flowbite-react";
 import { CiSearch } from "react-icons/ci";
+import { FaCartShopping } from "react-icons/fa6";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 
 
-function Navbars(){
-    return(
-        <>
-        <div className="Navbar">
+function Navbars() {
+  const isAuthenticated = useSelector((state) => state.auth);
+  return (
+    <>
+      <div className="Navbar">
         <Navbar fluid rounded>
-      <NavbarBrand  href="https://flowbite-react.com">
-        
-        <span className="self-center whitespace-nowrap text-3xl font-semibold dark:text-white">Urban Attire</span>
-      </NavbarBrand>
-      <NavbarToggle />
-      <NavbarCollapse>
-        <NavbarLink href="#" active>
-          Home
-        </NavbarLink>
-        <NavbarLink href="#">
-          About
-        </NavbarLink>
-        <NavbarLink href="#">Services</NavbarLink>
-        <NavbarLink href="#">Pricing</NavbarLink>
-        <NavbarLink href="#">Contact</NavbarLink>
-        <CiSearch className="text-xl "/>
-      </NavbarCollapse>
-    </Navbar>
-        </div>
-        
-        
-        </>
-    )
+          <NavbarBrand href="https://flowbite-react.com">
+
+            <span className="self-center whitespace-nowrap text-3xl font-semibold dark:text-white">Urban Attire</span>
+          </NavbarBrand>
+          <div className="relative flex items-center  w-[520px]">
+            <CiSearch className="absolute ml-2 text-xl text-gray-500" />
+            <input
+              type="text"
+              className="w-full pl-10 pr-4 py-2 border rounded-lg outline-none"
+            />
+          </div>
+
+          <NavbarToggle />
+          <NavbarCollapse>
+            <NavbarLink as={Link} to="/" active>
+             Home
+            </NavbarLink>
+            <NavbarLink as={Link} to="/products">
+             Product
+            </NavbarLink>
+           {
+           isAuthenticated ? 
+
+            <>
+            <NavbarLink as={Link} to="/login">Login
+            </NavbarLink>
+            </> :
+            <>
+             <NavbarLink as={Link} to="/wishlist" >
+            <svg class="text-lg  text-red-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path d="m12.75 20.66 6.184-7.098c2.677-2.884 2.559-6.506.754-8.705-.898-1.095-2.206-1.816-3.72-1.855-1.293-.034-2.652.43-3.963 1.442-1.315-1.012-2.678-1.476-3.973-1.442-1.515.04-2.825.76-3.724 1.855-1.806 2.201-1.915 5.823.772 8.706l6.183 7.097c.19.216.46.34.743.34a.985.985 0 0 0 .743-.34Z" />
+            </svg>
+            </NavbarLink>
+            <NavbarLink >
+              <div>
+                <FaCartShopping className="relative text-xl" />
+                <span className="absolute top-1 rounded-lg bg-red-300 right-2 px-[4px]">0</span>
+              </div>
+            </NavbarLink>
+             <p onClick={() => {
+                      dispatch(logout());
+                      navigate("/login");
+                    }} class="block cursor-pointer py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Logout</p>
+                
+            </>
+            
+            
+
+           }
+           
+
+          </NavbarCollapse>
+        </Navbar>
+      </div>
+
+
+    </>
+  )
 }
 export default Navbars;

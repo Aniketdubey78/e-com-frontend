@@ -1,14 +1,56 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 // import './App.css'
 
-import Mainrendercomponent from './components/Maincomponent'
+import Mainrendercomponent from './pages/Home'
+import Login from "./pages/Login"
+import Wishlist from "./pages/Wishlist"
+import { useDispatch, useSelector } from 'react-redux'
+import { getwishlist } from './features/wishlist/wishlistthunk'
+import  Navbar  from '../src/components/Navbar'
+import { Route, Routes } from 'react-router-dom'
+import ProductList from './pages/ProductList'
+import Showproduct from './pages/Showproduct'
+import Register from './pages/Register'
 
 function App() {
+    const {isAuthenticated } = useSelector((state) => state.auth);
+       const dispatch =useDispatch();
+
+       useEffect(() => {
+           if(isAuthenticated){
+            dispatch(getwishlist());
+           }
+       },[])
  return (
   <>
-  <Mainrendercomponent/>
+ <Navbar/>
+ <div className='phalana'>
+    <Routes>
+        <Route
+            path="/" element={<Mainrendercomponent/>}
+            />
+             <Route
+            path="/login" element={<Login/>}
+            />
+             <Route
+            path="/products" element={<ProductList/>}
+            />
+             <Route
+            path="/product/:id" element={<Showproduct/>}
+            />
+             <Route
+            path="/register" element={<Register/>}
+            />
+             <Route
+            path="/wishlist" element={<Wishlist/>}
+            />
+             
+        
+    </Routes>
+
+ </div>
   
   </>
  )

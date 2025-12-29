@@ -1,9 +1,9 @@
-import Component from "./Curesol";
-import Navbars from "./Navbar";
-import Sizematter from "./Cards";
-import HeroQuoteCard from "./Playheader";
-import ProductCard from "./ProductCard";
-import FooterComponent from "./Footer";
+import Component from "../components/Curesol";
+import Navbars from "../components/Navbar";
+import Sizematter from "../components/Cards";
+import HeroQuoteCard from "../components/Playheader";
+import ProductCard from "../components/ProductCard";
+import FooterComponent from "../components/Footer";
 
 
 function Mainrendercomponent() {
@@ -11,7 +11,7 @@ function Mainrendercomponent() {
         <>
             <div className="container-fluid " >
 
-                <Navbars />
+               
                 <div className="magic bg-orange-100  pt-4 mt-4 rounded-md">
                     <HeroQuoteCard/>
                     <Component />
