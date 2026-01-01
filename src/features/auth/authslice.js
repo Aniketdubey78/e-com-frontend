@@ -10,10 +10,10 @@ const authslice = createSlice({
         isauthenticated : !!localStorage.getItem("token")
     },
     reducers:{
-    login:(state) => {
+    logout:(state) => {
        state.token = null;
        state.isauthenticated = false;
-
+       state.user = null;
        localStorage.removeItem("user");
        localStorage.removeItem("token");
     }},
@@ -28,8 +28,8 @@ const authslice = createSlice({
             state.token = action.payload.token;
             state.isauthenticated = true;
 
-            localStorage.setItem("user",JSON.stringify(user));
-            localStorage.setItem("token",token);
+            localStorage.setItem("user",JSON.stringify(state.user));
+            localStorage.setItem("token",state.token);
         })
         builder.addCase(loginuser.rejected,(state) => {
         state.user = null;

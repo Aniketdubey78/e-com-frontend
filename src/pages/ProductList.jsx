@@ -8,22 +8,24 @@ const ProductList = () => {
     const {loading,products} = useSelector((state) => state.products);
     const dispatch = useDispatch();
     useEffect(()=>{
-     dispatch(fetchproduct);
+     dispatch(fetchproduct());
     },[])
     
     if(loading){
-        <div>Loding...</div>
+      return  <div>Loding...</div>
     }
 
     return (
          <div className='flex flex-wrap gap-3 justify-center'>
-      {products.map(product => (
+      {products.map((product,index) => (
+       
        <ProductData
           id={product._id}
-          imageUrl={product.imageUrl}
+          imageUrl={product.imgUrl}
           name={product.name}
           description={product.description}
           price={product.price}
+           key={index}
        />
       ))}
     </div>

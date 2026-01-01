@@ -13,6 +13,7 @@ import { Route, Routes } from 'react-router-dom'
 import ProductList from './pages/ProductList'
 import Showproduct from './pages/Showproduct'
 import Register from './pages/Register'
+import Addtocart from './pages/Cart'
 
 function App() {
     const {isAuthenticated } = useSelector((state) => state.auth);
@@ -45,6 +46,9 @@ function App() {
             />
              <Route
             path="/wishlist" element={<Wishlist/>}
+            />
+             <Route
+            path="/Cart" element={<Addtocart/>}
             />
              
         

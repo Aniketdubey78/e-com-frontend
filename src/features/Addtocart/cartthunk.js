@@ -1,12 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const getwishlist = createAsyncThunk(
+
+export const getcart = createAsyncThunk(
     "wishlist/get",
     async (_,{ rejectWithValue }) => {
        try {
          const token = localStorage.getItem("token");
-        const res = await axios.get(`${import.meta.env.VITE_API_BASEURL}/api/wishlist`,
+        const res = await axios.get(`${import.meta.env.VITE_API_BASEURL}/api/cart`,
             {
                 headers:{
                     Authorization:`Bearer ${token}`
@@ -19,14 +20,13 @@ export const getwishlist = createAsyncThunk(
        }
     }
 )
-export const addtowishlist = createAsyncThunk(
-    "wishlist/add",
+export const Addtocarts = createAsyncThunk(
+    "wishlist/Add",
     async (productId,{ rejectWithValue }) => {
        try {
-        const token = localStorage.getItem("token");
-        // POST to collection endpoint with productId in body
-        const res = await axios.post(`${import.meta.env.VITE_API_BASEURL}/api/wishlist/${productId}`,
-            { productId },
+         const token = localStorage.getItem("token");
+        const res = await axios.post(`${import.meta.env.VITE_API_BASEURL}/api/cart/${productId}`,
+            {productId},
             {
                 headers:{
                     Authorization:`Bearer ${token}`
@@ -39,13 +39,13 @@ export const addtowishlist = createAsyncThunk(
        }
     }
 )
-export const removefromwishlist = createAsyncThunk(
-    "wishlist/remove",
+export const removefromCart = createAsyncThunk(
+    "wishlist/Remove",
     async (productId,{ rejectWithValue }) => {
        try {
-        const token = localStorage.getItem("token");
-        // DELETE the resource by id
-        const res = await axios.post(`${import.meta.env.VITE_API_BASEURL}/api/wishlist/${productId}`,
+         const token = localStorage.getItem("token");
+        const res = await axios.post(`${import.meta.env.VITE_API_BASEURL}/api/cart/${productId}`,
+            {productId},
             {
                 headers:{
                     Authorization:`Bearer ${token}`

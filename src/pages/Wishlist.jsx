@@ -1,15 +1,21 @@
 import { useDispatch, useSelector } from "react-redux"
 import { removefromwishlist } from "../features/wishlist/wishlistthunk";
 import { Link } from "react-router-dom";
+import { removetoWishlist } from "../features/wishlistcointer";
 
 
 const wishlist = () => {
-    const items  = useSelector((state)=>state.products);
+   const items = useSelector(
+  (state) => Array.isArray(state.wishlist.items)
+    ? state.wishlist.items
+    : []
+);
     const dispatch = useDispatch();
 
     const handleWishlist = (id) => {
         try {
             dispatch(removefromwishlist(id));
+            
         } catch (error) {
             alert(error);
         }

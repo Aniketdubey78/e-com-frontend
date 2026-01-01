@@ -1,13 +1,20 @@
-import { Navbar, NavbarBrand, NavbarCollapse, NavbarLink, NavbarToggle } from "flowbite-react";
+import { Navbar, NavbarBrand, NavbarCollapse, NavbarToggle } from "flowbite-react";
 import { CiSearch } from "react-icons/ci";
 import { FaCartShopping } from "react-icons/fa6";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import { logout } from "../features/auth/authslice";
+import { getwishlist } from "../features/wishlist/wishlistthunk";
+import { getcart } from "../features/Addtocart/cartthunk";
+
 
 
 
 function Navbars() {
-  const isAuthenticated = useSelector((state) => state.auth);
+  const isAuthenticated = useSelector((state) => state.auth.isauthenticated);
+  const Counter = useSelector((state) => state.counter.value)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   return (
     <>
       <div className="Navbar">
@@ -26,35 +33,43 @@ function Navbars() {
 
           <NavbarToggle />
           <NavbarCollapse>
-            <NavbarLink as={Link} to="/" active>
+            <NavLink  to="/" className={({isActive}) => (isActive ? " py-2 text-blue-600" : " py-2 text-gray-700")}>
              Home
-            </NavbarLink>
-            <NavbarLink as={Link} to="/products">
+            </NavLink>
+            <NavLink className={({isActive}) => (isActive ? " py-2 text-blue-600" : "py-2 text-gray-700")} to="/products">
              Product
-            </NavbarLink>
+            </NavLink>
            {
-           isAuthenticated ? 
+           !isAuthenticated ? 
 
             <>
-            <NavbarLink as={Link} to="/login">Login
-            </NavbarLink>
+            <NavLink className={({isActive}) => (isActive ? " py-2 text-blue-600" : " py-2 text-gray-700")} to="/login">Login
+            </NavLink>
             </> :
             <>
-             <NavbarLink as={Link} to="/wishlist" >
+             <NavLink to="/wishlist" onClick={()=>dispatch(getwishlist())} className={({isActive}) => (isActive ? " py-2 text-blue-600" : " py-2 text-gray-700")}  >
             <svg class="text-lg  text-red-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
               <path d="m12.75 20.66 6.184-7.098c2.677-2.884 2.559-6.506.754-8.705-.898-1.095-2.206-1.816-3.72-1.855-1.293-.034-2.652.43-3.963 1.442-1.315-1.012-2.678-1.476-3.973-1.442-1.515.04-2.825.76-3.724 1.855-1.806 2.201-1.915 5.823.772 8.706l6.183 7.097c.19.216.46.34.743.34a.985.985 0 0 0 .743-.34Z" />
             </svg>
-            </NavbarLink>
-            <NavbarLink >
-              <div>
-                <FaCartShopping className="relative text-xl" />
-                <span className="absolute top-1 rounded-lg bg-red-300 right-2 px-[4px]">0</span>
+            </NavLink>
+            <NavLink to="/Cart" >
+              <div className="cart relative  py-2">
+                <FaCartShopping className=" text-xl" onClick={()=>dispatch(getcart)} />
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1 py-0.5 rounded-full">{Counter}</span>
               </div>
-            </NavbarLink>
-             <p onClick={() => {
-                      dispatch(logout());
-                      navigate("/login");
-                    }} class="block cursor-pointer py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Logout</p>
+            </NavLink>
+             <div className="cart-list py-2">
+               <button
+                 type="button"
+                 onClick={() => {
+                   dispatch(logout());
+                   navigate("/login");
+                 }}
+                 className="cursor-pointer text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+               >
+                 Logout
+               </button>
+             </div>
                 
             </>
             

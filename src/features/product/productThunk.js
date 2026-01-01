@@ -3,16 +3,24 @@ import axios from "axios";
 
 export const fetchproduct = createAsyncThunk(
     "prodct/fetchproduct",
-    async() => {
-        const res = await axios.get(`${import.meta.env.VITE_API_BASEURL}/products`)
-        return res.data.data;
+    async () => {
+        try {
+            const res = await axios.get(`${import.meta.env.VITE_API_BASEURL}/api/products`)
+            return res.data.data;
+        } catch (error) {
+            console.log(error)
+        }
     }
 )
 
 export const fetchsingleproduct = createAsyncThunk(
     "product/fetchsingleproduct",
     async (id) => {
-        const res = await axios.get(`${import.meta.env.VITE_API_BASEURL}/product/:${id}`)
-        res.data.data;
+        try {
+            const res = await axios.get(`${import.meta.env.VITE_API_BASEURL}/api/products/:${id}`)
+            res.data.data;
+        } catch (error) {
+            console.log(error)
+        }
     }
 )
