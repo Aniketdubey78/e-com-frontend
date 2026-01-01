@@ -25,7 +25,7 @@ export const addtowishlist = createAsyncThunk(
        try {
         const token = localStorage.getItem("token");
         // POST to collection endpoint with productId in body
-        const res = await axios.post(`${import.meta.env.VITE_API_BASEURL}/api/wishlist/${productId}`,
+        const res = await axios.post(`${import.meta.env.VITE_API_BASEURL}/api/wishlist`,
             { productId },
             {
                 headers:{
@@ -45,7 +45,8 @@ export const removefromwishlist = createAsyncThunk(
        try {
         const token = localStorage.getItem("token");
         // DELETE the resource by id
-        const res = await axios.post(`${import.meta.env.VITE_API_BASEURL}/api/wishlist/${productId}`,
+        const res = await axios.post(`${import.meta.env.VITE_API_BASEURL}/api/wishlist`,
+            {productId},
             {
                 headers:{
                     Authorization:`Bearer ${token}`
