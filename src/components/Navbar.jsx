@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../features/auth/authslice";
 import { getwishlist } from "../features/wishlist/wishlistthunk";
 import { getcart } from "../features/Addtocart/cartthunk";
+import SearchBox from "./Search";
 
 
 
@@ -24,16 +25,11 @@ function Navbars() {
 
             <span className="self-center whitespace-nowrap text-3xl font-semibold dark:text-white">Urban Attire</span>
           </NavbarBrand>
-          <div className="relative flex items-center  w-[520px]">
-            <CiSearch className="absolute ml-2 text-xl text-gray-500" />
-            <input
-              type="text"
-              className="w-full pl-10 pr-4 py-2 border rounded-lg outline-none"
-            />
-          </div>
+         
 
           <NavbarToggle />
           <NavbarCollapse>
+            <SearchBox/>
             <NavLink  to="/" className={({isActive}) => (isActive ? " py-2 text-blue-600" : " py-2 text-gray-700")}>
              Home
             </NavLink>

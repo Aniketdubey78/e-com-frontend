@@ -17,7 +17,7 @@ export const getcart = createAsyncThunk(
         console.log("i am in get cart");
         
         console.log(res.data)
-        return res.data.data.cart;
+        return res.data.data;
        } catch (error) {
         return rejectWithValue({ message: error.response?.data?.message || error.message });
        }

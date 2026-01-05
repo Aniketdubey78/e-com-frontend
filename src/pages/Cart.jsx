@@ -5,15 +5,16 @@ import { removetoWishlist } from "../features/wishlistcointer";
 import { useEffect } from "react";
 
 const Addtocart = () => {
- const cartItems = useSelector((state) => 
-Array.isArray(state.wishlist.items) ? state.wishlist.items : [] );
+  const cartItems = useSelector((state) =>
+    Array.isArray(state.Cart.Carts) ? state.Cart.Carts : []
+  );
 
   console.log(cartItems);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getcart());
-  }, [dispatch]);
+ useEffect(()=>{
+  dispatch(getcart())
+ },[dispatch])
 
   const handlecart = (id) => {
     try {
@@ -23,7 +24,7 @@ Array.isArray(state.wishlist.items) ? state.wishlist.items : [] );
       alert(error);
     }
   };
-  
+
   return (
     <>
       <div className="max-w-4xl mx-auto p-4">
@@ -33,40 +34,37 @@ Array.isArray(state.wishlist.items) ? state.wishlist.items : [] );
           <div>There Is No Items Selected In Cart </div>
         ) : (
           cartItems.map((item) => (
-  <div
-    key={item._id}
-    className="w-full flex items-center justify-between border rounded-lg p-3 mb-3 bg-white"
-  >
-    {/* LEFT */}
-    <div className="flex items-center gap-4">
-      <img
-        src={item.productId?.imgUrl}
-        alt={item.productId?.name}
-        className="w-14 h-14 object-cover rounded-md"
-      />
+            <div
+              key={item._id}
+              className="w-full flex items-center justify-between border rounded-lg p-3 mb-3 bg-white"
+            >
+              {/* LEFT */}
+              <div className="flex items-center gap-4">
+                <img
+                  src={item.imgUrl}
+                  alt={item.name}
+                  className="w-14 h-14 object-cover rounded-md"
+                />
 
-      <div>
-        <h4 className="font-medium text-heading">
-          {item.productId?.name}
-        </h4>
-        <p className="text-sm text-gray-500">
-          Qty: {item.quantity}
-        </p>
-      </div>
-    </div>
+                <div>
+                  <h4 className="font-medium text-heading">
+                    {item.name}
+                  </h4>
+                  
+                </div>
+              </div>
 
-    {/* RIGHT */}
-    <div className="flex items-center gap-6">
-      <span className="text-lg font-semibold">
-        ₹{item.productId?.price * item.quantity}
-      </span>
-      <Button onClick={() => handlecart(item._id)}>
-        Remove from cart
-      </Button>
-    </div>
-  </div>
-))
-
+              {/* RIGHT */}
+              <div className="flex items-center gap-6">
+                <span className="text-lg font-semibold">
+                  ₹{item.price }
+                </span>
+                <Button onClick={() => handlecart(item._id)}>
+                  Remove from cart
+                </Button>
+              </div>
+            </div>
+          ))
         )}
 
         {/* TOTAL */}
@@ -75,7 +73,7 @@ Array.isArray(state.wishlist.items) ? state.wishlist.items : [] );
           <h3 className="text-xl font-semibold">
             ₹
             {cartItems.reduce(
-              (total, item) => total + item.productId?.price ,
+              (total, item) => total + item.productId?.price,
               0
             )}
           </h3>
