@@ -16,14 +16,14 @@ import Register from './pages/Register'
 import Addtocart from './pages/Cart'
 
 function App() {
-    const {isAuthenticated } = useSelector((state) => state.auth);
-       const dispatch =useDispatch();
+    const isauthenticated = useSelector((state) => state.auth.isauthenticated);
+    const dispatch = useDispatch();
 
-       useEffect(() => {
-           if(isAuthenticated){
+    useEffect(() => {
+        if (isauthenticated) {
             dispatch(getwishlist());
-           }
-       },[])
+        }
+    }, [isauthenticated, dispatch])
  return (
   <>
  <Navbar/>

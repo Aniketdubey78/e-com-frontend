@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 export const getcart = createAsyncThunk(
-    "wishlist/get",
+    "cart/get",
     async (_,{ rejectWithValue }) => {
        try {
          const token = localStorage.getItem("token");
@@ -14,18 +14,26 @@ export const getcart = createAsyncThunk(
                 }
             }
         )
-        return res.data.data;
+        console.log("i am in get cart");
+        
+        console.log(res.data)
+        return res.data.data.cart;
        } catch (error) {
         return rejectWithValue({ message: error.response?.data?.message || error.message });
        }
     }
 )
 export const Addtocarts = createAsyncThunk(
-    "wishlist/Add",
+    "cart/Add",
     async (productId,{ rejectWithValue }) => {
+       console.log(productId)
+        
        try {
          const token = localStorage.getItem("token");
-        const res = await axios.post(`${import.meta.env.VITE_API_BASEURL}/api/cart/${productId}`,
+        console.log(token);
+        
+         
+        const res = await axios.post(`${import.meta.env.VITE_API_BASEURL}/api/cart`,
             {productId},
             {
                 headers:{
@@ -33,18 +41,21 @@ export const Addtocarts = createAsyncThunk(
                 }
             }
         )
-        return res.data.data;
+        
+        console.log(res.data.data)
+       return res.data.data;
+
        } catch (error) {
         return rejectWithValue({ message: error.response?.data?.message || error.message });
        }
     }
 )
 export const removefromCart = createAsyncThunk(
-    "wishlist/Remove",
-    async (productId,{ rejectWithValue }) => {
+    "cart/Remove",
+    async (productId,{rejectWithValue }) => {
        try {
          const token = localStorage.getItem("token");
-        const res = await axios.post(`${import.meta.env.VITE_API_BASEURL}/api/cart/${productId}`,
+        const res = await axios.post(`${import.meta.env.VITE_API_BASEURL}/api/cart`,
             {productId},
             {
                 headers:{
@@ -52,7 +63,7 @@ export const removefromCart = createAsyncThunk(
                 }
             }
         )
-        return res.data.data;
+       return res.data.data;
        } catch (error) {
         return rejectWithValue({ message: error.response?.data?.message || error.message });
        }

@@ -14,8 +14,8 @@ const Showproduct = () => {
         comment: ""
     });
     useEffect(()=>{
-          dispatch(fetchsingleproduct(productId));
-    },[]);
+      if (productId) dispatch(fetchsingleproduct(productId));
+    },[productId, dispatch]);
 
     if(loading){
         <div>
@@ -28,7 +28,7 @@ const Showproduct = () => {
       {/* card */}
       <div className='flex justify-center'>
         <div class="w-full max-w-sm md:max-w-lg bg-neutral-primary-soft p-6 border-default rounded-base">
-          <img class="rounded-base mb-6" src={product.imageUrl || ""} alt="product image" />
+          <img class="rounded-base mb-6" src={product.imgUrl || ""} alt="product image" />
           <div>
             <h5 class="text-2xl text-heading font-semibold tracking-tight">{product.name || ""}</h5>
             <p className='mt-2 text-lg text-gray-600'>{product.description || ""}</p>

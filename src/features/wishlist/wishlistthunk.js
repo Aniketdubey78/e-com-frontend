@@ -5,7 +5,11 @@ export const getwishlist = createAsyncThunk(
     "wishlist/get",
     async (_,{ rejectWithValue }) => {
        try {
+        console.log("i am here");
+        
          const token = localStorage.getItem("token");
+         console.log(token)
+        
         const res = await axios.get(`${import.meta.env.VITE_API_BASEURL}/api/wishlist`,
             {
                 headers:{
@@ -22,8 +26,10 @@ export const getwishlist = createAsyncThunk(
 export const addtowishlist = createAsyncThunk(
     "wishlist/add",
     async (productId,{ rejectWithValue }) => {
+        console.log(productId)
        try {
         const token = localStorage.getItem("token");
+         console.log(token)
         // POST to collection endpoint with productId in body
         const res = await axios.post(`${import.meta.env.VITE_API_BASEURL}/api/wishlist`,
             { productId },
@@ -33,6 +39,7 @@ export const addtowishlist = createAsyncThunk(
                 }
             }
         )
+        console.log(res)
         return res.data.data;
        } catch (error) {
         return rejectWithValue({ message: error.response?.data?.message || error.message });

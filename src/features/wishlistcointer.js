@@ -4,15 +4,18 @@ import { createSlice } from "@reduxjs/toolkit";
 const whishlistcounter = createSlice({
     name:"counter/wishlist",
     initialState:{
-        value:0,
+        value: Number(localStorage.getItem("cartCount")) || 0,
         error:null,
     },
     reducers:{
-        addinWishlist:(state) =>{
-            state.value += 1;
-        },
+        addinWishlist:(state) => {
+      state.value += 1;
+      localStorage.setItem("cartCount", state.value);
+    },
         removetoWishlist:(state) => {
-            state.value -=1;
+      state.value -= 1;
+      localStorage.setItem("cartCount", state.value);
+    
         }
     }
 })

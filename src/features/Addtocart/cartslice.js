@@ -17,14 +17,17 @@ const cartslice = createSlice({
                 })
                   builder.addCase(getcart.fulfilled,(state,action)=>{
                     state.loading = false;
-                    state.items = action.payload;
+                    state.Carts = action.payload;
                 })
                   builder.addCase(Addtocarts.fulfilled,(state,action)=>{
                     state.loading = false;
                     state.Carts.push(action.payload);
+                    console.log(action.payload);
+                    
+                    
                 })
                  builder.addCase(removefromCart.fulfilled,(state,action)=>{
-                     state.items = state.items.filter(item => item._id !== action.payload._id);
+                     state.Carts = state.Carts.filter(item => item._id !== action.payload._id);
                 })
     }
 })

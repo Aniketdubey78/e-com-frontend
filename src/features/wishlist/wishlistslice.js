@@ -21,7 +21,7 @@ const wishlistslice = createSlice({
         })
           builder.addCase(addtowishlist.fulfilled,(state,action)=>{
             state.loading = false;
-            state.items.push(...action.payload);
+            state.items.push(action.payload);
 
         })
          builder.addCase(removefromwishlist.fulfilled,(state,action)=>{

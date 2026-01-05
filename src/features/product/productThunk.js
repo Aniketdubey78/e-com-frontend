@@ -17,8 +17,8 @@ export const fetchsingleproduct = createAsyncThunk(
     "product/fetchsingleproduct",
     async (id) => {
         try {
-            const res = await axios.get(`${import.meta.env.VITE_API_BASEURL}/api/products/:${id}`)
-            res.data.data;
+            const res = await axios.get(`${import.meta.env.VITE_API_BASEURL}/api/products/${id}`)
+            return res.data.data;
         } catch (error) {
             console.log(error)
         }
