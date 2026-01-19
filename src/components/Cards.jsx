@@ -45,8 +45,16 @@ const productDdata = [
 
 
 export default function Sizematter() {
+  const sizeChart = {
+  S: { chest: "36–38 in", waist: "30–32 in" },
+  M: { chest: "38–40 in", waist: "32–34 in" },
+  L: { chest: "40–42 in", waist: "34–36 in" },
+  XL: { chest: "42–44 in", waist: "36–38 in" },
+  XXL: { chest: "44–46 in", waist: "38–40 in" },
+};
   const [pos, setpos] = useState({ x: 0, y: 0 });
   const [show, setShow] = useState(false);
+  const[size,setsize] = useState("S");
 
   const mouseHandlser = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -58,38 +66,46 @@ export default function Sizematter() {
   }
   return (
     <>
-      <div className="size p-10 mt-2 flex justify-between rounded-md ">
+      <div className="p-10 mt-2 flex flex-col lg:flex-row gap-6 rounded-md">
 
-        <div className="info">
-          <h5 className="text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
+        {/* LEFT INFO */}
+        <div className="info lg:w-1/2">
+          <h5 className="font-bold tracking-tight text-gray-900 dark:text-white text-lg lg:text-3xl">
             Sizing Made Easy
           </h5>
-          <p className=" text-gray-700 dark:text-gray-400 text-2xl mt-4">
-            Our size guide uses your measurements to find the best fit fot you
+
+          <p className="text-gray-700 dark:text-gray-400 text-[18px] lg:text-2xl mt-4">
+            Our size guide uses your measurements to find the best fit for you
           </p>
         </div>
-        <div className="sizeform bg-pink-50 p-4 rounded-lg w-[40%]">
-          <select name="Size" id="size" className="w-full px-6 ">
-            <option value="S">S</option>
-            <option value="M">M</option>
-            <option value="L">L</option>
-            <option value="XL">XL</option>
-            <option value="XXL">XXL</option>
 
+        {/* RIGHT FORM */}
+        <div className="sizeform bg-pink-50 p-4 rounded-lg lg:w-1/2 w-full">
+          <select className="w-full px-6 py-2 rounded-md"
+          onChange={(e)=>setsize(e.target.value)}
+          >
+            <option>S</option>
+            <option>M</option>
+            <option>L</option>
+            <option>XL</option>
+            <option>XXL</option>
           </select>
-          <div className="size-info p-4">
-            <span className="flex justify-between p-4">
-              <h4 className="text-sm">Chest</h4>
-              <h4 className="text-sm">36-38 in</h4>
-            </span>
-            <span className="flex justify-between p-4">
-              <h4 className="text-sm">Waist</h4>
-              <h4 className="text-sm" >30-32 in</h4>
-            </span>
-          </div>
 
+          <div className="size-info mt-4">
+            <div className="flex justify-between py-2">
+              <h4 className="text-sm">Chest</h4>
+              <h4 className="text-sm">{sizeChart[size].chest}</h4>
+            </div>
+
+            <div className="flex justify-between py-2">
+              <h4 className="text-sm">Waist</h4>
+              <h4 className="text-sm">{sizeChart[size].waist}</h4>
+            </div>
+          </div>
         </div>
+
       </div>
+
       <div className="ProductCard columns-2 sm:columns-3 lg:columns-5 gap-2 p-6">
         {productDdata.map((item) => (
           <div
@@ -132,8 +148,8 @@ export default function Sizematter() {
           {show && (
             <span className="pointer-events-none absolute  px-4 py-2 z-20  bg-black text-white text-sm rounded-full transition-transform duration-75"
               style={{
-                left: pos.x ,
-                top: pos.y ,
+                left: pos.x,
+                top: pos.y,
               }}
             >
               1244 INR
@@ -141,16 +157,16 @@ export default function Sizematter() {
           )}
         </div>
         <div className="showcase2 overflow-hidden relative"
-         onMouseEnter={() => setShow(true)}
+          onMouseEnter={() => setShow(true)}
           onMouseLeave={() => setShow(false)}
           onMouseMove={mouseHandlser}
-          >
+        >
           <img src={view2} alt="here is the image" className="w-full h-full object-cover block opacity-75" />
           {show && (
             <span className="pointer-events-none absolute  px-4 py-2 z-20  bg-black text-white text-sm rounded-full transition-transform duration-75"
               style={{
-                left: pos.x  ,
-                top: pos.y ,
+                left: pos.x,
+                top: pos.y,
               }}
             >
               1344 INR

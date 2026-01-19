@@ -72,9 +72,13 @@ const Addtocart = () => {
           <h3 className="text-xl font-semibold">Total</h3>
           <h3 className="text-xl font-semibold">
             ₹
+         
+            
             {cartItems.reduce(
-              (total, item) => total + item.productId?.price,
+                 
+              (total, item) => total + item.price,
               0
+                
             )}
           </h3>
         </div>

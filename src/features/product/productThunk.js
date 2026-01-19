@@ -104,6 +104,8 @@ export const CreateReviews = createAsyncThunk(
     
     console.log(rating,comment)
     const token = localStorage.getItem("token");
+    console.log(token);
+    
     try {
       const res = await axios.post(
          `${import.meta.env.VITE_API_BASEURL}/api/product/${productId}/reviews`,
@@ -124,7 +126,7 @@ export const CreateReviews = createAsyncThunk(
 );
 export const Deletereviews = createAsyncThunk(
   "products/Deletereviews",
-  async ({ productId, rating, comment }) => {
+  async ({ productId }) => {
     const token = localStorage.getItem("token");
     try {
       const res = await axios.delete(

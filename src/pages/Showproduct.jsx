@@ -21,6 +21,8 @@ const Showproduct = () => {
   const [reviewForm, setReviewForm] = useState({
     rating: 0,
     comment: "",
+    isSubmitting:false,
+    isSubmitted:false
   });
   useEffect(() => {
     if (productId) {
@@ -33,15 +35,44 @@ const Showproduct = () => {
     <div>Loding...</div>;
   }
 
-  const handlesave = (productId) => {
-    dispatch(
-      CreateReviews({
-        productId,
-        rating: reviewForm.rating,
-        comment: reviewForm.comment,
-      })
-    );
-  };
+ const handlesave = (productId) => {
+  if (!reviewForm.rating || !reviewForm.comment.trim()) {
+    return alert("Please provide rating and comment");
+  }
+
+
+  if (reviewForm.isSubmitting) return;
+
+  setReviewForm((prev) => ({
+    ...prev,
+    isSubmitting: true,
+  }));
+
+  dispatch(
+    CreateReviews({
+      productId,
+      rating: reviewForm.rating,
+      comment: reviewForm.comment.trim(),
+    })
+  )
+    .unwrap()
+    .then(() => {
+      setReviewForm({
+        rating: 0,
+        comment: "",
+        isSubmitting: false,
+        isSubmitted: true, 
+      });
+    })
+    .catch((error) => {
+      alert(error); 
+      setReviewForm((prev) => ({
+        ...prev,
+        isSubmitting: false,
+      }));
+    });
+};
+
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2">
@@ -88,7 +119,9 @@ const Showproduct = () => {
       <div className="flex flex-col items-center">
         <div className="w-full max-w-sm md:max-w-lg p-6">
           <p className="text-4xl">Leave a Review</p>
-          <form class="mt-4">
+          <form class="mt-4"
+          onSubmit={(e)=> e.preventDefault()}>
+            
             {[1, 2, 3, 4, 5].map((rate) => (
               <button
                 type="button"
@@ -133,11 +166,12 @@ const Showproduct = () => {
               placeholder="Leave a comment..."
             ></textarea>
             <div className="flex justify-end">
-              <Button
+              <Button type="submit"
                 onClick={() => handlesave(productId)}
+                disabled={reviewForm.isSubmitting || reviewForm.isSubmitted} 
                 className={"px-6 mt-2"}
               >
-                Save
+                {reviewForm.isSubmitted ? "Review Submitted" : "Save"}
               </Button>
             </div>
           </form>
@@ -179,7 +213,9 @@ const Showproduct = () => {
                   />
                   <div class="flex items-center divide-x rtl:divide-x-reverse divide-default">
                     <cite class="pe-3 font-medium text-heading">
-                      {review.userId.name}
+                     {review.userId.name || "Anonymous"}
+                      
+          
                     </cite>
                   </div>
                 </figcaption>

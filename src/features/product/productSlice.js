@@ -86,7 +86,7 @@ const productslice = createSlice({
         })
         builder.addCase(CreateReviews.fulfilled,(state, action)=>{
             state.loading = false;
-           state.reviews.push(action.payload);
+            state.reviews.push(action.payload)
         })
     }
 })
