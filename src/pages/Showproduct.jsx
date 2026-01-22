@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
@@ -7,6 +7,7 @@ import {
   fetchsingleproduct,
 } from "../features/product/productThunk";
 import { Button } from "flowbite-react";
+import { clearReviews } from "../features/product/productSlice";
 
 const Showproduct = () => {
   const {
@@ -15,14 +16,26 @@ const Showproduct = () => {
     reviews,
   } = useSelector((state) => state.products);
 
-  const params = useParams();
+  const auth = useSelector((state) => state.auth);
+  const user = auth?.user;
+
+  // Check if current user has already reviewed this product
+  const alreadyReviewed = useMemo(() => {
+    if (!user || !reviews) return false;
+    return reviews.some((review) => {
+      // Handle both string and ObjectId comparisons
+      const reviewUserId = review.userId?._id?.toString() || review.userId?._id;
+      const currentUserId = user._id?.toString() || user._id;
+      return reviewUserId === currentUserId;
+    });
+  }, [reviews, user]);  const params = useParams();
   const productId = params.id;
   const dispatch = useDispatch();
   const [reviewForm, setReviewForm] = useState({
     rating: 0,
     comment: "",
-    isSubmitting:false,
-    isSubmitted:false
+    isSubmitting: false,
+    isSubmitted: false
   });
   useEffect(() => {
     if (productId) {
@@ -32,46 +45,48 @@ const Showproduct = () => {
   }, [productId, dispatch]);
 
   if (loading) {
-    <div>Loding...</div>;
+    return <div>Loading...</div>;
   }
 
- const handlesave = (productId) => {
-  if (!reviewForm.rating || !reviewForm.comment.trim()) {
-    return alert("Please provide rating and comment");
-  }
+  const handlesave = (productId) => {
+    if (!reviewForm.rating || !reviewForm.comment.trim()) {
+      return alert("Please provide rating and comment");
+    }
 
 
-  if (reviewForm.isSubmitting) return;
+    if (reviewForm.isSubmitting) return;
 
-  setReviewForm((prev) => ({
-    ...prev,
-    isSubmitting: true,
-  }));
+    setReviewForm((prev) => ({
+      ...prev,
+      isSubmitting: true,
+    }));
 
-  dispatch(
-    CreateReviews({
-      productId,
-      rating: reviewForm.rating,
-      comment: reviewForm.comment.trim(),
-    })
-  )
-    .unwrap()
-    .then(() => {
-      setReviewForm({
-        rating: 0,
-        comment: "",
-        isSubmitting: false,
-        isSubmitted: true, 
+    dispatch(
+      CreateReviews({
+        productId,
+        rating: reviewForm.rating,
+        comment: reviewForm.comment.trim(),
+      })
+    )
+      .unwrap()
+      .then(() => {
+        setReviewForm({
+          rating: 0,
+          comment: "",
+          isSubmitting: false,
+          isSubmitted: true,
+        });
+        // Refetch reviews to show new review immediately
+        dispatch(FetchAllReviews(productId));
+      })
+      .catch((error) => {
+        alert(error);
+        setReviewForm((prev) => ({
+          ...prev,
+          isSubmitting: false,
+        }));
       });
-    })
-    .catch((error) => {
-      alert(error); 
-      setReviewForm((prev) => ({
-        ...prev,
-        isSubmitting: false,
-      }));
-    });
-};
+  };
 
 
   return (
@@ -120,8 +135,8 @@ const Showproduct = () => {
         <div className="w-full max-w-sm md:max-w-lg p-6">
           <p className="text-4xl">Leave a Review</p>
           <form class="mt-4"
-          onSubmit={(e)=> e.preventDefault()}>
-            
+            onSubmit={(e) => e.preventDefault()}>
+
             {[1, 2, 3, 4, 5].map((rate) => (
               <button
                 type="button"
@@ -136,11 +151,10 @@ const Showproduct = () => {
                 }
               >
                 <svg
-                  class={`w-5 h-5 ${
-                    rate <= reviewForm.rating
-                      ? "text-yellow-400"
-                      : "text-gray-400"
-                  }`}
+                  class={`w-5 h-5 ${rate <= reviewForm.rating
+                    ? "text-yellow-400"
+                    : "text-gray-400"
+                    }`}
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -166,12 +180,17 @@ const Showproduct = () => {
               placeholder="Leave a comment..."
             ></textarea>
             <div className="flex justify-end">
-              <Button type="submit"
+              <Button
+                type="submit"
+                disabled={alreadyReviewed || reviewForm.isSubmitting}
                 onClick={() => handlesave(productId)}
-                disabled={reviewForm.isSubmitting || reviewForm.isSubmitted} 
-                className={"px-6 mt-2"}
+                className={`px-6 mt-2 ${alreadyReviewed ? "bg-gray-400 cursor-not-allowed" : ""}`}
               >
-                {reviewForm.isSubmitted ? "Review Submitted" : "Save"}
+                {alreadyReviewed 
+                  ? "Submitted" 
+                  : reviewForm.isSubmitting 
+                    ? "Saving..." 
+                    : "Save"}
               </Button>
             </div>
           </form>
@@ -184,11 +203,10 @@ const Showproduct = () => {
                 <div class="flex items-center space-x-1 mb-4">
                   {[1, 2, 3, 4, 5].map((rate) => (
                     <svg
-                      class={`w-5 h-5 ${
-                        rate <= review.rating
-                          ? "text-yellow-400"
-                          : "text-gray-400"
-                      }`}
+                      class={`w-5 h-5 ${rate <= review.rating
+                        ? "text-yellow-400"
+                        : "text-gray-400"
+                        }`}
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -213,9 +231,9 @@ const Showproduct = () => {
                   />
                   <div class="flex items-center divide-x rtl:divide-x-reverse divide-default">
                     <cite class="pe-3 font-medium text-heading">
-                     {review.userId.name || "Anonymous"}
-                      
-          
+                      {review.userId.name || "Anonymous"}
+
+
                     </cite>
                   </div>
                 </figcaption>

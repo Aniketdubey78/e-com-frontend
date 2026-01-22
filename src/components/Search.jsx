@@ -58,7 +58,7 @@ const SearchBox = () => {
     {open && (
       <div
         ref={searchRef}
-        className="absolute top-0 left-[250px] mt-2 w-[90vw] max-w-[320px] bg-white z-50 mx-4"
+        className="absolute top-0  mx-auto mt-12 w-[90vw] max-w-[320px] bg-white z-50 "
       >
         <div className="relative flex items-center">
           <CiSearch className="absolute ml-2 text-xl text-gray-500" />

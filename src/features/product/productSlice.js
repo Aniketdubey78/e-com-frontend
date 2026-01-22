@@ -16,6 +16,9 @@ const productslice = createSlice({
     reducers:{
         clearstate(state) {
             state.items = []
+        },
+        clearReviews(state) {
+            state.reviews = []
         }
     },
     extraReducers:(builder) => {
@@ -92,5 +95,5 @@ const productslice = createSlice({
 })
 
 
-export const {clearstate} =productslice.actions;
+export const {clearstate,clearReviews} =productslice.actions;
 export default productslice.reducer;
